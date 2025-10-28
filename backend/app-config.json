@@ -1,0 +1,109 @@
+{
+  "version": "1.0.0",
+  "color": "teal",
+  "abTest": {
+    "fileUploadMethod": "drag-drop"
+  },
+  "claimForm": {
+    "steps": [
+      {
+        "id": "personal-information",
+        "title": "Personal Information",
+        "description": "Please provide your personal details.",
+        "fields": [
+          {
+            "id": "firstName",
+            "type": "STRING",
+            "label": "First Name",
+            "required": true,
+            "placeholder": "Enter your first name"
+          },
+          {
+            "id": "lastName",
+            "type": "STRING",
+            "label": "Last Name",
+            "required": true,
+            "placeholder": "Enter your last name"
+          },
+          {
+            "id": "birthDate",
+            "type": "DATE",
+            "label": "Birth Date",
+            "required": true
+          },
+          {
+            "id": "smoker",
+            "type": "BOOLEAN",
+            "label": "Smoker",
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "address-information",
+        "title": "Address Information",
+        "description": "Please provide your address.",
+        "fields": [
+          {
+            "id": "street",
+            "type": "STRING",
+            "label": "Street and Number",
+            "required": true,
+            "placeholder": "Enter your street and number"
+          },
+          {
+            "id": "postalCode",
+            "type": "STRING",
+            "label": "Postal Code",
+            "required": true,
+            "placeholder": "Enter your postal code"
+          },
+          {
+            "id": "city",
+            "type": "LIST",
+            "label": "City",
+            "required": true,
+            "options": ["Berlin", "Barcelona"],
+            "placeholder": "Select your city"
+          }
+        ]
+      },
+      {
+        "id": "claim-details",
+        "title": "Claim Details",
+        "description": "Please provide details about your claim",
+        "fields": [
+          {
+            "id": "incidentDate",
+            "type": "DATE",
+            "label": "Incident Date",
+            "required": true
+          },
+          {
+            "id": "claimType",
+            "type": "LIST",
+            "label": "Type",
+            "required": true,
+            "options": ["Reimbursement", "Insurance", "Service", "Other"],
+            "placeholder": "Select the claim type"
+          },
+          {
+            "id": "amount",
+            "type": "AMOUNT",
+            "label": "Amount",
+            "required": false,
+            "validation": {
+              "min": 0
+            }
+          },
+          {
+            "id": "document",
+            "type": "FILE",
+            "label": "Document",
+            "required": false
+          }
+        ]
+      }
+    ]
+  }
+}

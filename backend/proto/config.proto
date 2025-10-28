@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package config;
+
+service ConfigService {
+  rpc GetConfig(GetConfigRequest) returns (GetConfigResponse);
+  rpc GetConfigForWidget(GetConfigForWidgetRequest) returns (GetConfigResponse);
+  rpc GetClaimFormSteps(GetClaimFormStepsRequest) returns (GetClaimFormStepsResponse);
+  rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse);
+}
+
+message GetConfigRequest {
+  string tenant_id = 1;
+}
+
+message GetConfigForWidgetRequest {
+  string api_key = 1; // tenantId passed as api_key header
+}
+
+message GetConfigResponse {
+  string id = 1;
+  string data = 2; // JSON string
+}
+
+message GetClaimFormStepsRequest {
+  string tenant_id = 1;
+}
+
+message GetClaimFormStepsResponse {
+  repeated Step steps = 1;
+}
+
+message Step {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  int32 order = 4;
+  repeated Field fields = 5;
+}
+
+message Field {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  bool required = 4;
+  repeated string options = 5;
+  int32 order = 6;
+}
+
+message UpdateConfigRequest {
+  string config_data = 1; // JSON string
+  string tenant_id = 2;
+}
+
+message UpdateConfigResponse {
+  string message = 1;
+}

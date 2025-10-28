@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package claims;
+
+service ClaimsService {
+  rpc CreateClaim(CreateClaimRequest) returns (CreateClaimResponse);
+  rpc GetClaim(GetClaimRequest) returns (GetClaimResponse);
+  rpc UpdateClaim(UpdateClaimRequest) returns (UpdateClaimResponse);
+  rpc DeleteClaim(DeleteClaimRequest) returns (DeleteClaimResponse);
+  rpc ListClaims(ListClaimsRequest) returns (ListClaimsResponse);
+}
+
+message CreateClaimRequest {
+  string identification_number = 1;
+  string status = 2;
+  string data = 3; // JSON string
+  string user_id = 4;
+}
+
+message CreateClaimResponse {
+  string id = 1;
+  string identification_number = 2;
+  string status = 3;
+  string data = 4;
+  string user_id = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message GetClaimRequest {
+  string id = 1;
+}
+
+message GetClaimResponse {
+  string id = 1;
+  string identification_number = 2;
+  string status = 3;
+  string data = 4;
+  string user_id = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message UpdateClaimRequest {
+  string id = 1;
+  string identification_number = 2;
+  string status = 3;
+  string data = 4;
+}
+
+message UpdateClaimResponse {
+  string id = 1;
+  string identification_number = 2;
+  string status = 3;
+  string data = 4;
+  string user_id = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message DeleteClaimRequest {
+  string id = 1;
+}
+
+message DeleteClaimResponse {
+  bool success = 1;
+}
+
+message ListClaimsRequest {
+  string user_id = 1;
+}
+
+message ListClaimsResponse {
+  repeated Claim claims = 1;
+}
+
+message Claim {
+  string id = 1;
+  string identification_number = 2;
+  string status = 3;
+  string data = 4;
+  string user_id = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}

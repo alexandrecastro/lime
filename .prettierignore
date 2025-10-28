@@ -1,0 +1,30 @@
+# DEPENDENCIES
+node_modules
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# BUILD OUTPUTS
+dist
+build
+coverage
+out
+
+# LOGS
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS FILES
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# GENERATED FILES
+*.min.js
+*.min.css
+

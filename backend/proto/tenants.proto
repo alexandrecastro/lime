@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package tenants;
+
+service TenantsService {
+  rpc CreateTenant(CreateTenantRequest) returns (CreateTenantResponse);
+  rpc GetTenant(GetTenantRequest) returns (GetTenantResponse);
+  rpc UpdateTenant(UpdateTenantRequest) returns (UpdateTenantResponse);
+  rpc DeleteTenant(DeleteTenantRequest) returns (DeleteTenantResponse);
+  rpc ListTenants(ListTenantsRequest) returns (ListTenantsResponse);
+}
+
+message CreateTenantRequest {
+  string name = 1;
+  string logo = 2; // base64 encoded image
+}
+
+message CreateTenantResponse {
+  string id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message GetTenantRequest {
+  string id = 1;
+}
+
+message GetTenantResponse {
+  string id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message UpdateTenantRequest {
+  string id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message UpdateTenantResponse {
+  string id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message DeleteTenantRequest {
+  string id = 1;
+}
+
+message DeleteTenantResponse {
+  bool success = 1;
+}
+
+message ListTenantsRequest {
+  // Empty for now
+}
+
+message ListTenantsResponse {
+  repeated Tenant tenants = 1;
+}
+
+message Tenant {
+  string id = 1;
+  string name = 2;
+  string logo = 3;
+}

@@ -1,0 +1,17 @@
+# LIME FRONTEND DOCKERFILE FOR DEV
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+# INSTALL DEPENDENCIES
+RUN npm ci
+
+# COPY SOURCE CODE
+COPY . .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
