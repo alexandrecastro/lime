@@ -273,7 +273,11 @@ The frontend will be available at:
 
 ---
 
-## API Endpoints
+## API Documentation
+
+API documentation is available in http://localhost:3000/api.
+
+It is automatically generated from the source code using OpenAPI (Swagger).
 
 All REST API endpoints are prefixed with `/api/v1`.
 
@@ -566,6 +570,8 @@ The application uses an **in-memory SQLite database** for development. Data is n
 ---
 
 ## Testing
+
+The GitHub Actions file [test.yml](.github/workflows/test.yml) runs automatically all tests for both backend and frontend on every push and pull request to any branch, keeping test coverage up to date.
 
 ### Backend Testing
 

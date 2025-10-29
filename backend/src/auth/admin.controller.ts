@@ -9,14 +9,24 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UpdateAdminService } from './update-admin.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { User } from '../users/entities/user.entity';
 
+@ApiTags('admin')
 @Controller('admin')
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth('JWT-auth')
 export class AdminController {
   constructor(
     private authService: AuthService,
@@ -26,6 +36,30 @@ export class AdminController {
   ) {}
 
   @Post('create-admin')
+  @ApiOperation({ summary: 'Create a new admin user' })
+  @ApiResponse({
+    status: 201,
+    description: 'Admin user created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Admin user created successfully' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            email: { type: 'string' },
+            name: { type: 'string' },
+            role: { type: 'string', enum: ['admin'] },
+            tenantId: { type: 'string' },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 409, description: 'User is already an admin' })
+  @ApiBody({ type: CreateUserDto })
   async createAdmin(@Body() createUserDto: CreateUserDto) {
     const { email, password, name, tenantId } = createUserDto;
 
@@ -87,6 +121,27 @@ export class AdminController {
   }
 
   @Post('make-admin/:email')
+  @ApiOperation({ summary: 'Promote an existing user to admin' })
+  @ApiParam({
+    name: 'email',
+    description: 'Email of the user to promote to admin',
+    example: 'user@example.com',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User successfully promoted to admin',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        name: { type: 'string' },
+        role: { type: 'string', enum: ['admin'] },
+        tenantId: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({ status: 404, description: 'User not found' })
   async makeAdmin(@Param('email') email: string) {
     const user = await this.updateAdminService.updateUserToAdmin(email);
     const { password: _, ...result } = user;
