@@ -30,8 +30,8 @@ async function bootstrap() {
 
   // Swagger/OpenAPI Configuration
   const config = new DocumentBuilder()
-    .setTitle('LIME Claims API')
-    .setDescription('LIME Claims – A tenant-based claim management system.')
+    .setTitle('LIME API')
+    .setDescription('LIME – A tenant-based claim management system.')
     .setVersion('1.0.0')
     .addTag('auth', 'Authentication endpoints')
     .addTag('admin', 'Admin management endpoints')
@@ -54,7 +54,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {
-    customSiteTitle: 'LIME Claims API Documentation',
+    customSiteTitle: 'LIME API Documentation',
     customCss: '.swagger-ui .topbar { display: none }',
     customfavIcon: '/lime.svg',
   });
@@ -63,7 +63,9 @@ async function bootstrap() {
   console.log(
     '✓ LIME application (built by Castro) is running on: http://localhost:3000'
   );
-  console.log('✓ LIME API documentation available at: http://localhost:3000/api');
+  console.log(
+    '✓ LIME API documentation available at: http://localhost:3000/api'
+  );
 }
 
 bootstrap();

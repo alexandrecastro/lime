@@ -150,7 +150,7 @@ services:
   backend:
     environment:
       - NODE_ENV=production
-      - JWT_SECRET=your-secret-key-here  # Change this!
+      - JWT_SECRET=s3cr3t-k3y
 ```
 
 ### Port Mapping
@@ -194,7 +194,7 @@ volumes:
 - [ ] Configure firewall rules
 - [ ] Set up monitoring and logging
 - [ ] Regular backups of data
-- [ ] Use persistent database (PostgreSQL/MySQL) instead of in-memory SQLite
+- [ ] Use a persistent database (PostgreSQL) instead of in-memory SQLite
 
 ### Reverse Proxy Setup (Nginx)
 

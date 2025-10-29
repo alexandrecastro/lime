@@ -1,8 +1,8 @@
-# <img src="frontend/public/lime.svg" alt="LIME" width="26"> LIME Claims
+# <img src="frontend/public/lime.svg" alt="LIME" width="26"> LIME • Claims
 
 *If life gives you limes, make margaritas.*
 
-**LIME Claims** is a tenant-based claim management system. It allows the tenant to customize steps and fields of the claim form and then embed it to its own website. Tenant's customers can easily submit claims via the tenant's website itself.
+**LIME** is a tenant-based claim management system. It allows the tenant to customize steps and fields of the claim form and then embed it to its own website. Tenant's customers can easily submit claims via the tenant's website itself.
 
 ---
 
@@ -547,7 +547,7 @@ docker-compose -f docker-compose.dev.yml down
 ```
 
 ### Database
-The application uses an **in-memory SQLite database** for development. Data is not persisted between restarts. For production, consider using a persistent database like PostgreSQL.
+The application uses an **in-memory SQLite database** for development. **Data is not persisted between restarts.** For production, consider using a persistent database like PostgreSQL.
 
 ---
 
@@ -598,7 +598,7 @@ npm run test:coverage  # WITH COVERAGE REPORT
 
 ## License
 
-This project was created by Castro using some help from AI, and it is licensed under the MIT License.
+This project was created by Castro with some help of AI, and it is licensed under the MIT License.
 
 ---
 

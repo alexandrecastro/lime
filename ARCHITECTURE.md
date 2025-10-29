@@ -1,4 +1,4 @@
-# LIME Claims Application Architecture
+# LIME Application Architecture
 
 This document describes the architecture of the LIME application and how all components work together.
 
@@ -18,13 +18,13 @@ This document describes the architecture of the LIME application and how all com
 └──────────┼──────────────────────┼─────────────────────┼──────────┘
            │                      │                     │
            │ HTTP GET             │ HTTP GET [API-KEY]  │ HTTP POST [API-KEY]
-           │ lime-widget.js       │ (TENANT CONFIG)     │ (SUBMIT CLAIM)
+           │ (lime-widget.iife.js)│ (TENANT CONFIG)     │ (SUBMIT CLAIM)
            │                      │                     │
            │                      │                     │
            ▼                      ▼                     ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │                           LOAD BALANCER                          │
-│                              (NGINX)                             │
+│                              (nginx)                             │
 └──────────────────────────────────────────────────────────────────┘
            │                      │                     │
            ▼                      ▼                     ▼
@@ -33,13 +33,12 @@ This document describes the architecture of the LIME application and how all com
 │                           (LIME NETWORK)                         │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────────┐  │
-│  │                FRONTEND CONTAINER (NGINX)                  │  │
+│  │                FRONTEND CONTAINER (nginx)                  │  │
 │  │                                                            │  │
-│  │  ┌────────────┐  ┌──────────────┐  ┌────────────────┐      │  │
-│  │  │React Admin │  │ React User   │  │ Widget JS File │      │  │
-│  │  │ Dashboard  │  │  Dashboard   │  │ (lime-widget   │      │  │
-│  │  │            │  │              │  │   .iife.js)    │      │  │
-│  │  └────────────┘  └──────────────┘  └────────────────┘      │  │
+│  │  ┌───────────┐  ┌────────────┐  ┌─────────────────────┐    │  │
+│  │  │   ADMIN   │  │    USER    │  │   WIDGET JS FILE    │    │  │
+│  │  │ DASHBOARD │  │ DASHBORAD  │  │ lime-widget.iife.js │    │  │
+│  │  └───────────┘  └────────────┘  └─────────────────────┘    │  │
 │  │                                                            │  │
 │  │                 PORT 80 (MAPPED TO 5173)                   │  │
 │  └──────────────────────────────┬─────────────────────────────┘  │
@@ -48,7 +47,7 @@ This document describes the architecture of the LIME application and how all com
 │                                 │                                │
 │                                 ▼                                │
 │  ┌────────────────────────────────────────────────────────────┐  │
-│  │                 BACKEND CONTAINER (NODE.JS)                │  │
+│  │                 BACKEND CONTAINER (Node.js)                │  │
 │  │                                                            │  │
 │  │  ┌──────────────────────────────────────────────────────┐  │  │
 │  │  │                   NestJS APPLICATION                 │  │  │
@@ -67,7 +66,7 @@ This document describes the architecture of the LIME application and how all com
 │  │                              │                             │  │
 │  │                              ▼                             │  │
 │  │  ┌──────────────────────────────────────────────────────┐  │  │
-│  │  │               IN-MEMORY SQLITE DATABASE              │  │  │
+│  │  │               IN-MEMORY SQLite DATABASE              │  │  │
 │  │  │                                                      │  │  │
 │  │  │        TABLES: users, claims, config, tenants        │  │  │
 │  │  └──────────────────────────────────────────────────────┘  │  │
@@ -424,10 +423,9 @@ healthCheck() {
 - [ ] Templates and components for steps and fields
 - [ ] i18n and localization for steps and fields
 - [ ] Validations for fields
-- [ ] More field types (*e.g.* `IBAN`, `POSTAL_CODE`, `PHONE_NUMBER`, `MONEY` etc.).
+- [ ] More field types (*e.g.* `IBAN`, `HSN_TSN`, `POSTAL_CODE`, `PHONE_NUMBER`, `MONEY`, `LICENSE_PLATE` etc.).
 - [ ] Multiple configurations per tenant
 - [ ] Data segregation for sensitive data
-- [ ] Swagger/OpenAPI documentation
 - [ ] Health check endpoints
 - [ ] Rate limiting
 - [ ] Enhanced logging
@@ -435,7 +433,6 @@ healthCheck() {
 - [ ] Email notifications
 - [ ] More customization based on tenant configuration
 - [ ] More CRUD operations
-- [ ] More test cases
 
 ### Medium Term
 - [ ] Export/import functionality

@@ -143,7 +143,10 @@ export class ConfigController {
     schema: {
       type: 'object',
       properties: {
-        message: { type: 'string', example: 'Configuration updated successfully' },
+        message: {
+          type: 'string',
+          example: 'Configuration updated successfully',
+        },
       },
     },
   })

@@ -5,7 +5,7 @@
 set -e
 
 echo "=================================="
-echo "✓ LIME Claims (built by Castro)"
+echo "✓ LIME (built by Castro)"
 echo "=================================="
 echo ""
 

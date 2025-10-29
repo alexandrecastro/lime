@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-      - JWT_SECRET=dev-secret-key
+      - JWT_SECRET=s3cr3t-k3y
     volumes:
       - ./backend/src:/app/src
     command: npm run start:dev

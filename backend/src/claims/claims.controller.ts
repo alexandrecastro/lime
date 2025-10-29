@@ -86,7 +86,9 @@ export class ClaimsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  @ApiOperation({ summary: 'Get all claims (filtered by user role and tenant)' })
+  @ApiOperation({
+    summary: 'Get all claims (filtered by user role and tenant)',
+  })
   @ApiBearerAuth('JWT-auth')
   @ApiResponse({
     status: 200,
@@ -111,7 +113,10 @@ export class ClaimsController {
     status: 200,
     description: 'Claim found',
   })
-  @ApiResponse({ status: 403, description: 'Forbidden - insufficient permissions' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - insufficient permissions',
+  })
   @ApiResponse({ status: 404, description: 'Claim not found' })
   findOne(@Param('id') id: string, @Request() req) {
     return this.claimsService.findOne(id, req.user.userId, req.user.role);
@@ -130,7 +135,10 @@ export class ClaimsController {
     status: 200,
     description: 'Claim updated successfully',
   })
-  @ApiResponse({ status: 403, description: 'Forbidden - insufficient permissions' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - insufficient permissions',
+  })
   @ApiResponse({ status: 404, description: 'Claim not found' })
   @ApiBody({ type: UpdateClaimDto })
   update(
@@ -159,7 +167,10 @@ export class ClaimsController {
     status: 200,
     description: 'Claim deleted successfully',
   })
-  @ApiResponse({ status: 403, description: 'Forbidden - insufficient permissions' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - insufficient permissions',
+  })
   @ApiResponse({ status: 404, description: 'Claim not found' })
   remove(@Param('id') id: string, @Request() req) {
     return this.claimsService.remove(id, req.user.userId, req.user.role);

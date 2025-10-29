@@ -32,7 +32,10 @@ export class AuthController {
     schema: {
       type: 'object',
       properties: {
-        access_token: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
+        access_token: {
+          type: 'string',
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        },
       },
     },
   })
@@ -59,7 +62,10 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({ status: 400, description: 'Bad request - Tenant ID is required' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - Tenant ID is required',
+  })
   @ApiBody({ type: CreateUserDto })
   async register(@Body() createUserDto: CreateUserDto) {
     const { email, password, name, tenantId, externalId } = createUserDto;
