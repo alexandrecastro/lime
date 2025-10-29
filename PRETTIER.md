@@ -38,33 +38,7 @@ cd backend
 npm run format
 ```
 
-## IDE Integration
-
-### VS Code
-
-1. Install the Prettier extension
-2. Add the following to your VS Code settings:
-
-```json
-{
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
-}
-```
-
-### Other IDEs
+### IDE Integration
 
 Please refer to the [Prettier documentation](https://prettier.io/docs/en/editors.html) for setup instructions for your specific IDE.
 
@@ -74,7 +48,7 @@ To automatically format code before committing, consider adding a pre-commit hoo
 
 ## Ignored Files
 
-The following files/directories are excluded from formatting (see `.prettierignore`):
+The following files/directories are excluded from formatting (see [.prettierignore](.prettierignore)):
 
 - `node_modules`
 - `dist` / `build` outputs

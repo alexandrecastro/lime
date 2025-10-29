@@ -413,12 +413,20 @@ const AdminDashboard: React.FC = () => {
             </div>
             <div className="flex items-center space-x-4">
               {user?.role === 'super_admin' && (
+                  <>
                 <a
                   href="/admin/tenants"
                   className="bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-teal-700 cursor-pointer"
                 >
                   Manage Tenants
                 </a>
+                <a
+                  href="/create-admin"
+                  className="bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-teal-700 cursor-pointer"
+                  >
+                  Create Admin
+                </a>
+                  </>
               )}
               <span className="text-sm text-gray-700">
                 Welcome, <span className="font-bold">{user?.name}</span>
@@ -890,7 +898,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="bg-white border border-gray-300 rounded-lg p-6">
                   <pre className="text-sm text-gray-700 whitespace-pre-wrap text-left">
                     {
-                      '<script src="public/widget/lime-widget.iife.js"></script> // URL TO WIDGET FILE\n'
+                      '<script src="http://localhost:5173/lime-widget.iife.js"></script> // URL TO WIDGET FILE\n'
                     }
                     {'<script>\n'}
                     {'  ClaimWidget.createModal({\n'}

@@ -111,7 +111,7 @@ export class ClaimsService {
       .leftJoinAndSelect('claim.user', 'user')
       .where('claim.id = :id', { id });
 
-    if (userRole !== 'admin' && userId) {
+    if (!['admin', 'super_admin'].includes(userRole) && userId) {
       query.andWhere('claim.userId = :userId', { userId });
     }
 
@@ -134,7 +134,7 @@ export class ClaimsService {
     if (
       'status' in updateClaimDto &&
       updateClaimDto.status &&
-      userRole !== 'admin'
+        !['admin', 'super_admin'].includes(userRole)
     ) {
       throw new ForbiddenException('Only admins can change claim status');
     }

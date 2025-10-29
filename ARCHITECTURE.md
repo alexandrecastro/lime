@@ -2,6 +2,8 @@
 
 This document describes the architecture of the LIME application and how all components work together.
 
+---
+
 ## High-Level Architecture
 
 ```
@@ -75,16 +77,49 @@ This document describes the architecture of the LIME application and how all com
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
+---
+
+## Technology Stack Summary
+
+**Backend**:
+- NestJS (Node.js framework)
+- TypeScript
+- TypeORM (ORM)
+- SQLite (dev) / PostgreSQL (prod)
+- JWT for authentication
+- gRPC for RPC calls
+
+**Frontend**:
+- React 18
+- TypeScript
+- Vite (build tool)
+- Tailwind CSS
+- Axios (HTTP client)
+- React Router (routing)
+
+**Infrastructure**:
+- Docker & Docker Compose
+- nginx (web server)
+- Node.js 18 (runtime)
+- Alpine Linux (base images)
+
+**Widget**:
+- Pure TypeScript
+- No external dependencies
+- IIFE bundle format
+- Inline styles
+
+---
 
 ## Component Details
 
 ### 1. Frontend Container (nginx)
 
-**Production Image**: `nginx:alpine`
+**Image**: `nginx:alpine`
 
 **Responsibilities**:
 - Serve React Admin Dashboard
-- Serve React User Dashboard  
+- Serve React User Dashboard
 - Serve Widget JS file
 - Static asset caching
 
@@ -97,7 +132,7 @@ This document describes the architecture of the LIME application and how all com
 
 ### 2. Backend Container (NestJS)
 
-**Production Image**: `node:20-alpine`
+**Image**: `node:20-alpine`
 
 **Responsibilities**:
 - REST API endpoints
@@ -197,6 +232,8 @@ tenants (
 )
 ```
 
+---
+
 ## Data Flow
 
 ### User Login Flow
@@ -250,6 +287,8 @@ tenants (
 7. Config immediately available for widget
 ```
 
+---
+
 ## Multi-Tenancy Architecture
 
 ### Tenant Isolation
@@ -279,19 +318,21 @@ Each tenant has:
 1. **user**:
    - Can create own claims
    - Can view own claims
-   - Cannot access Admin Panel
+   - Cannot access Admin Dashboard
 
 2. **admin**:
    - Can view all claims from their tenant
    - Can update claim status
    - Can edit tenant configuration
-   - Can access Admin Panel
+   - Can access Admin Dashboard
 
 3. **super_admin**:
    - Can view all claims from all tenants
    - Can manage tenants
    - Can create admin users
    - Can access all admin features
+
+---
 
 ## Widget Architecture
 
@@ -305,33 +346,7 @@ Each tenant has:
 5. Format: IIFE (Immediately Invoked Function Expression)
 6. Global variable: window.ClaimWidget
 ```
-
-### Widget API
-
-```javascript
-ClaimWidget.createModal({
-  apiUrl: 'http://your-api.com/api/v1',   // Backend URL
-  apiKey: 'tenant-id-here',               // Tenant ID
-  userId: 'external-user-id',             // External user ID
-  onSuccess: function(claimId) {          // Success callback
-    console.log('Claim created:', claimId);
-  },
-  onError: function(error) {              // Error callback
-    console.error('Error:', error);
-  }
-});
-```
-
-### Widget Features
-
-- **No Dependencies**: Self-contained, no React runtime needed
-- **Inline Styles**: No external CSS files
-- **Modal Interface**: Overlay with close button
-- **Dynamic Form**: Fetches configuration from backend
-- **Step Wizard**: Multi-step form if configured
-- **Field Types**: STRING, NUMBER, AMOUNT, DATE, BOOLEAN, FILE, LIST
-- **Validation**: Client-side validation
-- **Auto-User-Creation**: Creates user if doesn't exist
+---
 
 ## Security Architecture
 
@@ -372,84 +387,19 @@ async getProtectedResource(@Request() req) {
 - **Rate Limiting**: Should be added in production
 - **CORS**: Configured to allow all origins (restrictable)
 
-## Performance Considerations
+---
 
-### Caching Strategy
-
-**Frontend**:
-- Static assets: 1 year cache
-- Widget JS: 1 day cache (configurable)
-- HTML: No cache (SPA)
-
-**Backend**:
-- Config: Could be cached per tenant
-- User lookups: Could be cached
-- Database queries: Use indexes
-
-### Scalability
-
-**Horizontal Scaling**:
-```
-1. Add more backend instances
-2. Use load balancer (nginx/HAProxy)
-3. Use external database (not in-memory)
-4. Use Redis for session/cache
-5. Use CDN for widget JS
-```
-
-**Vertical Scaling**:
-```
-1. Increase container resources
-2. Optimize database queries
-3. Add database indexes
-4. Use connection pooling
-```
-
-## Development vs Production
-
-### Development Mode
-
-```yaml
-# docker-compose.dev.yml
-- Hot reload enabled (nodemon, Vite HMR)
-- Source code mounted as volumes
-- Debug logging enabled
-- CORS allows all origins
-- Ports: 3000 (backend), 5173 (frontend)
-```
-
-### Production Mode
-
-```yaml
-# docker-compose.yml
-- Compiled/built code only
-- No source code access
-- Optimized builds
-- Nginx serves static files
-- Production logging
-- Ports: 3000 (backend), 5174 (frontend)
-```
-
-## Monitoring & Observability
-
-### Logging
-
-```
-Docker logs: docker-compose logs -f
-Backend logs: Structured JSON logging
-Frontend logs: Browser console errors
-nginx logs: access and error logs
-```
+## Considerations
 
 ### Metrics (To Implement)
 
-- Request rate
-- Response time
-- Error rate
-- Active connections
-- Database query time
-- Memory usage
-- CPU usage
+- Request rate.
+- Response time.
+- Error rate.
+- Active connections.
+- Database query time.
+- Memory usage.
+- CPU usage.
 
 ### Health Checks (To Implement)
 
@@ -465,19 +415,29 @@ healthCheck() {
 }
 ```
 
+---
+
 ## Future Enhancements
 
 ### Short Term
+- [ ] Code cleanup and code deduplication
+- [ ] Templates and components for steps and fields
+- [ ] i18n and localization for steps and fields
+- [ ] Validations for fields
+- [ ] More field types (*e.g.* `IBAN`, `POSTAL_CODE`, `PHONE_NUMBER`, `MONEY` etc.).
+- [ ] Multiple configurations per tenant
+- [ ] Data segregation for sensitive data
 - [ ] Swagger/OpenAPI documentation
 - [ ] Health check endpoints
 - [ ] Rate limiting
 - [ ] Enhanced logging
+- [ ] AI-powered features (MCP and integration with AI tools)
 - [ ] Email notifications
-- [ ] Test cases
+- [ ] More customization based on tenant configuration
+- [ ] More CRUD operations
+- [ ] More test cases
 
 ### Medium Term
-- [ ] Webhook support for events
-- [ ] Advanced analytics
 - [ ] Export/import functionality
 - [ ] Advanced search/filtering
 - [ ] File storage (cloud)
@@ -485,35 +445,7 @@ healthCheck() {
 ### Long Term
 - [ ] Mobile app
 - [ ] Advanced workflow engine
-- [ ] AI-powered features
+- [ ] Webhook support for events
 
-## Technology Stack Summary
-
-**Backend**:
-- NestJS (Node.js framework)
-- TypeScript
-- TypeORM (ORM)
-- SQLite (dev) / PostgreSQL (prod)
-- JWT for authentication
-- gRPC for RPC calls
-
-**Frontend**:
-- React 18
-- TypeScript
-- Vite (build tool)
-- Tailwind CSS
-- Axios (HTTP client)
-- React Router (routing)
-
-**Infrastructure**:
-- Docker & Docker Compose
-- nginx (web server)
-- Node.js 18 (runtime)
-- Alpine Linux (base images)
-
-**Widget**:
-- Pure TypeScript
-- No external dependencies
-- IIFE bundle format
-- Inline styles
+---
 

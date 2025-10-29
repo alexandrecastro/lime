@@ -123,7 +123,7 @@ const CreateAdminPage: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="mb-8">
           <div className="mx-auto h-16 w-16 mb-4">
-            <img src={Logo} alt="LIME Logo" className="h-9 w-9" />
+            <img src={Logo} alt="LIME Logo" className="h-full w-full" />
           </div>
           <h2 className="text-center text-3xl font-extrabold text-teal-500">
             LIME • Claims
