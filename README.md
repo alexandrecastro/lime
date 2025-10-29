@@ -1,12 +1,8 @@
-# <img src="frontend/public/lime.svg" alt="LIME" width="22"> LIME Claims
+# <img src="frontend/public/lime.svg" alt="LIME" width="26"> LIME Claims
 
 *If life gives you limes, make margaritas.*
 
 **LIME Claims** is a tenant-based claim management system. It allows the tenant to customize steps and fields of the claim form and then embed it to its own website. Tenant's customers can easily submit claims via the tenant's website itself.
-
----
-
-**New to LIME?** See [QUICKSTART.md](QUICKSTART.md).
 
 ---
 
@@ -133,6 +129,15 @@ For detailed Docker instructions, see [DOCKER.md](DOCKER.md).
 ---
 
 ## Features
+
+- Dynamic claim form creation.
+- Multi-tenant support with isolated data.
+- Role-based access control.
+- Embeddable widget for any website.
+- Admin dashboard for managing everything.
+- RESTful and gRPC APIs.
+- Docker-based deployment.
+
 
 ### Backend (NestJS)
 - **REST API** with versioning (`/api/v1`).
