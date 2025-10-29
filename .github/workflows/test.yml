@@ -1,4 +1,4 @@
-name: Tests
+name: LIME Tests
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
   frontend-tests:
     name: LIME Frontend Tests
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./frontend
