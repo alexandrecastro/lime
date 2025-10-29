@@ -275,47 +275,181 @@ The frontend will be available at:
 
 ## API Endpoints
 
+All REST API endpoints are prefixed with `/api/v1`.
+
 ### Authentication
-- `POST` `/api/v1/auth/login` – User login.
-- `POST` `/api/v1/auth/register` – User registration,
-- `GET` `/api/v1/auth/profile` – Get user profile (protected).
 
-### Users (Protected)
-- `GET` `/api/v1/users` – List all users.
-- `GET` `/api/v1/users/:id` – Get user by ID.
-- `POST` `/api/v1/users` – Create user.
-- `PATCH` `/api/v1/users/:id` – Update user.
-- `DELETE` `/api/v1/users/:id` – Delete user.
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/auth/login` | User login | No |
+| `POST` | `/auth/register` | User registration | No |
+| `GET` | `/auth/profile` | Get current user profile | Yes |
 
-### Claims (Protected)
-- `GET` `/api/v1/claims` – List user's claims (or all if admin).
-- `GET` `/api/v1/claims/:id` – Get claim by ID.
-- `POST` `/api/v1/claims` – Create new claim.
-- `PATCH` `/api/v1/claims/:id` – Update claim.
-- `DELETE` `/api/v1/claims/:id` – Delete claim.
+**Login Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
 
-### Configuration (Protected)
-- `GET` `/api/v1/config` – Get full configuration.
-- `GET` `/api/v1/config/claim-form` – Get claim form steps.
-- `POST` `/api/v1/config` – Update configuration (admin only).
+**Register Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "User Name",
+  "tenantId": "tenant-id",
+  "externalId": "optional-external-id"
+}
+```
+
+### Admin Management
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/admin/create-admin` | Create or promote user to admin | Yes |
+| `POST` | `/admin/make-admin/:email` | Promote existing user to admin by email | Yes |
+
+**Create Admin Request Body:**
+```json
+{
+  "email": "admin@example.com",
+  "password": "password123",
+  "name": "Admin Name",
+  "tenantId": "optional-tenant-id",
+  "externalId": "optional-external-id"
+}
+```
+
+### Users
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/users` | List all users | Yes |
+| `GET` | `/users/:id` | Get user by ID | Yes |
+| `POST` | `/users` | Create new user | Yes |
+| `PATCH` | `/users/:id` | Update user | Yes |
+| `DELETE` | `/users/:id` | Delete user | Yes |
+
+### Tenants
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/tenants` | List all tenants (public) | No |
+| `GET` | `/tenants/w` | Get tenant for widget (requires `API-Key` header) | No |
+| `GET` | `/tenants/:id` | Get tenant by ID | Yes |
+| `POST` | `/tenants` | Create new tenant | Yes |
+| `PATCH` | `/tenants/:id` | Update tenant | Yes |
+| `DELETE` | `/tenants/:id` | Delete tenant | Yes |
+
+**Tenant Widget Endpoint:**
+- Requires `API-Key` header with tenant ID
+
+### Claims
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/claims/w` | Create claim via widget (requires `API-Key` and `User-ID` headers) | No |
+| `GET` | `/claims` | List claims (filtered by user role) | Yes |
+| `GET` | `/claims/:id` | Get claim by ID | Yes |
+| `POST` | `/claims` | Create new claim | Yes |
+| `PATCH` | `/claims/:id` | Update claim | Yes |
+| `DELETE` | `/claims/:id` | Delete claim | Yes |
+
+**Widget Claim Creation:**
+- Requires `API-Key` header with tenant ID
+- Requires `User-ID` header with external user ID
+- Automatically creates user if doesn't exist
+
+**Create Claim Request Body:**
+```json
+{
+  "identificationNumber": "optional-id",
+  "status": "OPEN",
+  "data": {
+    "field1": "value1",
+    "field2": "value2"
+  }
+}
+```
+
+**Role-based Access:**
+- **user**: Can only view/modify their own claims
+- **admin**: Can view/modify all claims from their tenant, can change claim status
+- **super_admin**: Can view/modify all claims from all tenants
+
+### Configuration
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/config/w` | Get config for widget (requires `API-Key` header) | No |
+| `GET` | `/config` | Get current tenant configuration | Yes |
+| `GET` | `/config/claim-form` | Get claim form steps | Yes |
+| `POST` | `/config` | Update configuration (admin only) | Yes |
+
+**Configuration Widget Endpoint:**
+- Requires `API-Key` header with tenant ID
 
 ## gRPC Services
 
-The backend also exposes gRPC services on port 50051:
+The backend also exposes gRPC services on port `50051`. All proto definitions are in `backend/proto/`.
 
 ### Claims Service
-- `CreateClaim` – Create a new claim.
-- `GetClaim` – Get claim by ID.
-- `UpdateClaim` – Update claim.
-- `DeleteClaim` – Delete claim.
-- `ListClaims` – List claims.
+
+| Method | Description | Request |
+|--------|-------------|---------|
+| `CreateClaim` | Create a new claim | `CreateClaimRequest` |
+| `CreateClaimForWidget` | Create claim via widget (public) | `CreateClaimForWidgetRequest` |
+| `GetClaim` | Get claim by ID | `GetClaimRequest` (includes optional `user_id`, `role` for auth) |
+| `UpdateClaim` | Update claim | `UpdateClaimRequest` (includes optional `user_id`, `role` for auth) |
+| `DeleteClaim` | Delete claim | `DeleteClaimRequest` (includes optional `user_id`, `role` for auth) |
+| `ListClaims` | List claims | `ListClaimsRequest` (includes `user_id`, `role`, `tenant_id` for filtering) |
 
 ### Users Service
-- `CreateUser` – Create a new user.
-- `GetUser` – Get user by ID.
-- `UpdateUser` – Update user.
-- `DeleteUser` – Delete user.
-- `ListUsers` – List users.
+
+| Method | Description | Request |
+|--------|-------------|---------|
+| `CreateUser` | Create a new user | `CreateUserRequest` |
+| `GetUser` | Get user by ID | `GetUserRequest` |
+| `UpdateUser` | Update user | `UpdateUserRequest` |
+| `DeleteUser` | Delete user | `DeleteUserRequest` |
+| `ListUsers` | List all users | `ListUsersRequest` |
+
+### Auth Service
+
+| Method | Description | Request |
+|--------|-------------|---------|
+| `Login` | User login | `LoginRequest` |
+| `Register` | User registration | `RegisterRequest` (includes `external_id`) |
+| `GetProfile` | Get user profile | `GetProfileRequest` |
+
+### Config Service
+
+| Method | Description | Request |
+|--------|-------------|---------|
+| `GetConfig` | Get configuration for tenant | `GetConfigRequest` |
+| `GetConfigForWidget` | Get configuration for widget | `GetConfigForWidgetRequest` (uses `api_key` instead of `tenant_id`) |
+| `GetClaimFormSteps` | Get claim form steps | `GetClaimFormStepsRequest` |
+| `UpdateConfig` | Update configuration | `UpdateConfigRequest` |
+
+### Tenants Service
+
+| Method | Description | Request |
+|--------|-------------|---------|
+| `CreateTenant` | Create a new tenant | `CreateTenantRequest` |
+| `GetTenant` | Get tenant by ID | `GetTenantRequest` |
+| `GetTenantForWidget` | Get tenant for widget | `GetTenantForWidgetRequest` (uses `api_key` instead of `tenant_id`) |
+| `UpdateTenant` | Update tenant | `UpdateTenantRequest` |
+| `DeleteTenant` | Delete tenant | `DeleteTenantRequest` |
+| `ListTenants` | List all tenants | `ListTenantsRequest` |
+
+### Admin Service
+
+| Method | Description | Request |
+|--------|-------------|---------|
+| `CreateAdmin` | Create or promote user to admin | `CreateAdminRequest` |
+| `MakeAdmin` | Promote existing user to admin by email | `MakeAdminRequest` |
 
 ---
 
@@ -437,14 +571,21 @@ The application uses an **in-memory SQLite database** for development. Data is n
 
 ```bash
 cd backend
-npm run test      # Run unit tests
-npm run test:e2e  # Run end-to-end tests
+npm run test        # RUN ALL TESTS
+npm run test:watch  # WATCH MODE
+npm run test:cov    # WITH COVERAGE REPORT
 ```
 
+All test files follow NestJS testing patterns and use Jest with `@nestjs/testing` utilities.
+
+
 ### Frontend Testing
+
 ```bash
 cd frontend
-npm run test     # Run tests
+npm run test           # RUN TESTS
+npm run test:ui        # INTERACTIVE UI MODE
+npm run test:coverage  # WITH COVERAGE REPORT
 ```
 
 ---

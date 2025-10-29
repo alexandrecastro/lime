@@ -20,6 +20,6 @@ import { User } from '../users/entities/user.entity';
   ],
   controllers: [AuthController, AdminController],
   providers: [AuthService, UpdateAdminService, JwtStrategy],
-  exports: [AuthService],
+  exports: [AuthService, UpdateAdminService],
 })
 export class AuthModule {}

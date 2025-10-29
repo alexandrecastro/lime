@@ -4,6 +4,7 @@ package claims;
 
 service ClaimsService {
   rpc CreateClaim(CreateClaimRequest) returns (CreateClaimResponse);
+  rpc CreateClaimForWidget(CreateClaimForWidgetRequest) returns (CreateClaimResponse);
   rpc GetClaim(GetClaimRequest) returns (GetClaimResponse);
   rpc UpdateClaim(UpdateClaimRequest) returns (UpdateClaimResponse);
   rpc DeleteClaim(DeleteClaimRequest) returns (DeleteClaimResponse);
@@ -15,6 +16,14 @@ message CreateClaimRequest {
   string status = 2;
   string data = 3; // JSON string
   string user_id = 4;
+}
+
+message CreateClaimForWidgetRequest {
+  string identification_number = 1;
+  string status = 2;
+  string data = 3; // JSON string
+  string tenant_id = 4; // API-Key header equivalent
+  string external_user_id = 5; // User-ID header equivalent
 }
 
 message CreateClaimResponse {
@@ -29,6 +38,8 @@ message CreateClaimResponse {
 
 message GetClaimRequest {
   string id = 1;
+  string user_id = 2; // Optional - for authorization
+  string role = 3; // Optional - for authorization
 }
 
 message GetClaimResponse {
@@ -46,6 +57,8 @@ message UpdateClaimRequest {
   string identification_number = 2;
   string status = 3;
   string data = 4;
+  string user_id = 5; // Optional - for authorization
+  string role = 6; // Optional - for authorization
 }
 
 message UpdateClaimResponse {
@@ -60,6 +73,8 @@ message UpdateClaimResponse {
 
 message DeleteClaimRequest {
   string id = 1;
+  string user_id = 2; // Optional - for authorization
+  string role = 3; // Optional - for authorization
 }
 
 message DeleteClaimResponse {
@@ -68,6 +83,8 @@ message DeleteClaimResponse {
 
 message ListClaimsRequest {
   string user_id = 1;
+  string role = 2; // Optional - for filtering
+  string tenant_id = 3; // Optional - for filtering
 }
 
 message ListClaimsResponse {

@@ -41,6 +41,9 @@ export class GrpcController implements OnModuleInit {
 
     // Load Tenants service
     this.loadTenantsService();
+
+    // Load Admin service
+    this.loadAdminService();
   }
 
   private loadClaimsService() {
@@ -62,6 +65,9 @@ export class GrpcController implements OnModuleInit {
 
     this.server.addService(claimsService, {
       CreateClaim: this.grpcService.createClaim.bind(this.grpcService),
+      CreateClaimForWidget: this.grpcService.createClaimForWidget.bind(
+        this.grpcService
+      ),
       GetClaim: this.grpcService.getClaim.bind(this.grpcService),
       UpdateClaim: this.grpcService.updateClaim.bind(this.grpcService),
       DeleteClaim: this.grpcService.deleteClaim.bind(this.grpcService),
@@ -166,9 +172,35 @@ export class GrpcController implements OnModuleInit {
     this.server.addService(tenantsService, {
       CreateTenant: this.grpcService.createTenant.bind(this.grpcService),
       GetTenant: this.grpcService.getTenant.bind(this.grpcService),
+      GetTenantForWidget: this.grpcService.getTenantForWidget.bind(
+        this.grpcService
+      ),
       UpdateTenant: this.grpcService.updateTenant.bind(this.grpcService),
       DeleteTenant: this.grpcService.deleteTenant.bind(this.grpcService),
       ListTenants: this.grpcService.listTenants.bind(this.grpcService),
+    });
+  }
+
+  private loadAdminService() {
+    const adminPackageDefinition = protoLoader.loadSync(
+      join(__dirname, '../../proto/admin.proto'),
+      {
+        keepCase: true,
+        longs: String,
+        enums: String,
+        defaults: true,
+        oneofs: true,
+      }
+    );
+
+    const adminProto = grpc.loadPackageDefinition(
+      adminPackageDefinition
+    ) as any;
+    const adminService = adminProto.admin.AdminService.service;
+
+    this.server.addService(adminService, {
+      CreateAdmin: this.grpcService.createAdmin.bind(this.grpcService),
+      MakeAdmin: this.grpcService.makeAdmin.bind(this.grpcService),
     });
   }
 }

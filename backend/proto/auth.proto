@@ -23,6 +23,7 @@ message RegisterRequest {
   string password = 2;
   string name = 3;
   string tenant_id = 4;
+  string external_id = 5;
 }
 
 message RegisterResponse {

@@ -5,6 +5,7 @@ package tenants;
 service TenantsService {
   rpc CreateTenant(CreateTenantRequest) returns (CreateTenantResponse);
   rpc GetTenant(GetTenantRequest) returns (GetTenantResponse);
+  rpc GetTenantForWidget(GetTenantForWidgetRequest) returns (GetTenantResponse);
   rpc UpdateTenant(UpdateTenantRequest) returns (UpdateTenantResponse);
   rpc DeleteTenant(DeleteTenantRequest) returns (DeleteTenantResponse);
   rpc ListTenants(ListTenantsRequest) returns (ListTenantsResponse);
@@ -23,6 +24,10 @@ message CreateTenantResponse {
 
 message GetTenantRequest {
   string id = 1;
+}
+
+message GetTenantForWidgetRequest {
+  string api_key = 1; // tenantId passed as API-Key header
 }
 
 message GetTenantResponse {

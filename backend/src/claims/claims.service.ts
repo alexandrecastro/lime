@@ -134,7 +134,7 @@ export class ClaimsService {
     if (
       'status' in updateClaimDto &&
       updateClaimDto.status &&
-        !['admin', 'super_admin'].includes(userRole)
+      !['admin', 'super_admin'].includes(userRole)
     ) {
       throw new ForbiddenException('Only admins can change claim status');
     }

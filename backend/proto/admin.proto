@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package admin;
+
+service AdminService {
+  rpc CreateAdmin(CreateAdminRequest) returns (CreateAdminResponse);
+  rpc MakeAdmin(MakeAdminRequest) returns (MakeAdminResponse);
+}
+
+message CreateAdminRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  string tenant_id = 4;
+  string external_id = 5;
+}
+
+message CreateAdminResponse {
+  string message = 1;
+  User user = 2;
+}
+
+message MakeAdminRequest {
+  string email = 1;
+}
+
+message MakeAdminResponse {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string role = 4;
+  string tenant_id = 5;
+  string external_id = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string role = 4;
+  string tenant_id = 5;
+  string external_id = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
